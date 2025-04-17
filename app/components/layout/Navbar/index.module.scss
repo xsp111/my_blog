@@ -14,13 +14,16 @@
 
     .linkArea {
         span {
-            font-size: 18px;
             padding: 0 20px;
+            font-size: 18px;
             color: #515767;
+
         }
 
         .active {
             color: #1e80ff;
+            font-weight: 500;
+            font-size: 20px;
         }
     }
 

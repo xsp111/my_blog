@@ -13,6 +13,11 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+
+    // typeorm 实体定义配置
+    "experimentalDecorators": true,      // 启用装饰器语法
+    "emitDecoratorMetadata": true,       // 生成装饰器元数据
+    "strictPropertyInitialization": false, // 临时关闭属性初始化校验
     "plugins": [
       {
         "name": "next"
