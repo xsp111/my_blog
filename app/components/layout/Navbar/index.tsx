@@ -2,44 +2,76 @@
 import styles from './index.module.scss';
 import NavLinks from './nav-links';
 import { Button, Dropdown, Avatar } from 'antd';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Login from '@/app/components/Login';
-import { useAppSelector } from '@/store/hooks';
+import {  useAppDispatch, useAppSelector } from '@/store/hooks';
+import { initializeUser } from '@/store/modules/userStore';
 import type { MenuProps } from 'antd/es/menu';
-import Link from 'next/link';
 import { HomeOutlined, LogoutOutlined } from '@ant-design/icons';
+import request from '@/app/util/fetch';
+import { useRouter } from 'next/navigation';
 
-
-
-const items: MenuProps['items'] = [
-    {
-      key: '1',
-      label: (
-        <Link href={'/'}>
-            个人主页
-        </Link>
-      ),
-      icon: <HomeOutlined />,
-    },
-    {
-      key: '2',
-      label: (
-        <span>
-            退出登录
-        </span>
-      ),
-      icon: <LogoutOutlined />,
-    },
-];
 
 
 export default function Navbar () {
+    const router = useRouter();
+    const items: MenuProps['items'] = [
+        {
+          key: '1',
+          label: (
+            <span className={styles.menuOption}  onClick={handleOnUserInfo}>
+                个人主页
+            </span>
+          ),
+          icon: <HomeOutlined />,
+        },
+        {
+          key: '2',
+          label: (
+            <span className={styles.menuOption} onClick={handleOnLogout}>
+                退出登录
+            </span>
+          ),
+          icon: <LogoutOutlined />,
+        },
+    ];
+
+
+    // 初始化用户状态
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        dispatch(initializeUser());
+    }, [dispatch]);
+
     // 加载用户信息
     const user = useAppSelector((state) => state.user);
 
-    const [isShowLogin, setIsShowLogin] = useState(false);
+    // 是否显示登录弹窗
+    const [isShowLogin, setIsShowLogin] = useState(false); 
+
+    // 跳转到文章编辑页面
     function handleOnGotoEditorPage () {
-        return ;
+        if(!user?.id) {
+            setIsShowLogin(true);
+            return;
+        }else{
+            router.push('/editor/new');
+        }
+    }
+
+    // 跳转到个人主页
+    function handleOnUserInfo () {
+        router.push(`/user/${user?.id}`);
+    }
+
+    // 退出登录
+    function handleOnLogout () {
+        request.post('/api/user/logout').then((res: any) => {
+            if(res.code === 0) {
+                console.log('退出登录成功');
+                dispatch(initializeUser());
+            }
+        })
     }
 
     function handleOnClickLogin () {

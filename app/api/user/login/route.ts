@@ -1,19 +1,22 @@
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
+import getSession from "@/app/util/getIronSession";
 import { NextRequest, NextResponse } from "next/server";
-import { ISession } from "../..";
 import  { getDB} from "@/db/index";
 import { User, UserAuth } from "@/db/entity";
-
 
 
 export async function POST(req: NextRequest){
     const { verify, phone, identity_type } = await req.json();
     const myDataSource = await getDB();
-    const session: ISession = await getIronSession(await cookies(), {
-        cookieName: 'sid',
-        password: 'i4S6BvFigSN8VDOxBA5ooLGdldqfSdmS',
-    })
+    const session = await getSession();
+
+    // 将用户信息保存在ironsession
+    async function saveUser( user: { id: number, nickname: string, avatar: string}) {
+        session.id = user.id;
+        session.nickname =user.nickname;
+        session.avatar = user.avatar;
+    
+        await session.save();
+    }
 
     if( Number(verify) === session.verifyCode){
         // login success
@@ -25,43 +28,44 @@ export async function POST(req: NextRequest){
         .where('user_auths.identifier = :identifier and user_auths.identity = :identity', { identifier: phone, identity: identity_type })
         .getOne();
 
+        let user: { id: number, nickname: string, avatar: string};
         if( userAuth ){
-            console.log(userAuth)
-            const user = userAuth.user;
-            const { id, nickname, avatar } = user;
-
-            session.id = id;
-            session.nickname = nickname;
-            session.avatar = avatar;
-            await session.save();
+            user = userAuth.user;
         } else {
             // 用户不存在，创建用户
-            const user = new User();
-            user.nickname = `用户${Math.floor(Math.random() * 10000)}`;
-            user.avatar = '/avatar/default.png';
-
+            const newUser = new User();
+            newUser.nickname = `用户${Math.floor(Math.random() * 10000)}`;
+            newUser.avatar = '/avatar/default.png';
             const userAuth = new UserAuth();
-            userAuth.user = user;
+            userAuth.user = newUser;
             userAuth.identifier = phone;
             userAuth.identity = identity_type;
             userAuth.credential = verify;
             const resUserAuth = await myDataSource.manager.save(userAuth);
-            const { user: { id, nickname, avatar} } = resUserAuth;
-            session.id = id;
-            session.nickname = nickname;
-            session.avatar = avatar;
-            await session.save();
+            user = resUserAuth.user;
         }
 
-        return NextResponse.json({
+        await saveUser(user);
+
+        // 创建响应对象
+        const res = NextResponse.json({
             code: 0,
-            msg: '登录成功',
+            msg: "登录成功",
             data: {
                 id: session.id,
                 nickname: session.nickname,
-                avatar: session.avatar
-            }
+                avatar: session.avatar,
+            },
         });
+
+        // 设置 Cookie
+        res.cookies.set("user", JSON.stringify(user), {
+            path: "/",
+            maxAge: 60 * 60 * 24 * 1, // 1天
+        });
+
+        return res;
+
     } else {
         // login fail
         return NextResponse.json({

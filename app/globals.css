@@ -10,6 +10,19 @@ a {
     color: inherit;
 }
 
+button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
 body {
     background-color: aliceblue;
+}
+
+.content-layout {
+    width: 80%;
+    margin: 60px auto 0;
+    background-color: #fff;
+    padding: 20px;
 }

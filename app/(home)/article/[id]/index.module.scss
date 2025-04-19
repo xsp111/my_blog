@@ -1,0 +1,37 @@
+.title {
+    margin-bottom: 30px;
+    font-size: 30px;
+    font-weight: bolder;
+}
+
+.user {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin-bottom: 40px;
+
+    .info {
+        margin-left: 10px;
+
+        .name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .date {
+            display: flex;
+            font-size: 14px;
+            color: #8a919a;
+
+            div{
+                margin-right: 10px;
+            }
+        }
+    }
+}
+
+.markdown {
+    img {
+        width: 100%;
+    }
+}

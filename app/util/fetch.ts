@@ -1,15 +1,15 @@
 import axios from "axios";
 
-const requestInstance = axios.create({
+const request = axios.create({
     baseURL: '/',
 });
 
-requestInstance.interceptors.request.use(
+request.interceptors.request.use(
     config => config,
     error => Promise.reject(error)
 );
 
-requestInstance.interceptors.response.use( response => {
+request.interceptors.response.use( response => {
     if(response?.status === 200){
         return response?.data;
     }else{
@@ -22,4 +22,4 @@ requestInstance.interceptors.response.use( response => {
     error => Promise.reject(error)
 );
 
-export default requestInstance;
+export default request;

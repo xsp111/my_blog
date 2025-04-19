@@ -5,7 +5,7 @@ import style from './index.module.scss';
 import { useRef, useState } from 'react';
 import { Statistic } from 'antd';
 import validPhone from '@/app/util/validPhone';
-import request from '@/app/service/fetch';
+import request from '@/app/util/fetch';
 import { message } from 'antd';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { setUser } from '@/store/modules/userStore';
@@ -93,14 +93,12 @@ export default function Login ( { visible, onClose }: LoginProps ) {
             ...form,
             identity_type: 'phone',
         }).then((res: any) => {
-            console.log(res.data);
             // 如果返回的code为0，登录成功
             if( res.code === 0 ){
                 // 保存用户信息
                 dispatch(setUser(
                    res.data
                 ));
-                console.log(user);
 
                 // 登陆成功提醒
                 messageApi.open({
@@ -117,7 +115,6 @@ export default function Login ( { visible, onClose }: LoginProps ) {
                     type: 'error',
                     content: res.msg,
                 });
-                console.log(res);
             }
         }) 
     }
