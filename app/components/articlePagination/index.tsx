@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import Listitem from "@/app/components/Listitem";
 import { Divider, Pagination } from "antd";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setPage } from "@/store/modules/paginationStore";
 
 export type article = {
     id: number,
@@ -21,12 +22,12 @@ export type article = {
 
 export default function ArticlePagination({ count, articles }: { count: number, articles: string }) {
     const PageSize = 6; // 每页显示的文章数量
-    const [currentPage, setCurrentPage] = useState(2); // 当前页码
+    const currentPage = useAppSelector((state) => state.page.currentPage);
+    const dispatch = useAppDispatch();
     const articleList: Array<article> = JSON.parse(articles);
 
     function handleOnChangePage(page: number) {
-        console.log(page);
-        setCurrentPage(page);
+        dispatch(setPage(page));
     }
 
     return (

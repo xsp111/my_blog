@@ -68,7 +68,7 @@ export default function NewEditor() {
             </div>
             <MDEditor 
                 value={content}
-                height={'100vh'}
+                height={1080}
                 onChange={setContent} 
             />
         </div>

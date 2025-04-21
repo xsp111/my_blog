@@ -1,0 +1,13 @@
+.enter {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-left: 20px;
+
+    }
+}

@@ -26,7 +26,6 @@ export async function POST(req: NextRequest) {
         newArticle.is_deleted = 0;
         newArticle.user = user;
         await myDataSource.manager.save(newArticle);
-        console.log('文章发布成功');
 
         return NextResponse.json({ 
             code: 0,

@@ -13,7 +13,7 @@ export default function Listitem({ article }: { article: article }) {
                 <div className={styles.article}>
                     <div className={styles.userInfo}>
                         <span className={styles.name}>{article.user.nickname}</span>
-                        <span className={styles.date}>{formatDistanceToNow(new Date(article.update_time))}</span>
+                        <span className={styles.date}>{formatDistanceToNow(new Date(article.update_time)) + ' ago'}</span>
                     </div>
                     <h4 className={styles.title}>{article.title}</h4>
                     <p className={styles.content}>{markdownToTxt(article.content)}</p>

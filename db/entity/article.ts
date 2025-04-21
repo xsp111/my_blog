@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from "typeorm";
 import User from "./user";
+import Comment from "./comment";
 @Entity('articles')
 export default class Article {
     @PrimaryGeneratedColumn()
@@ -30,4 +31,7 @@ export default class Article {
         name: 'user_id',
     })
     user: User;
+
+    @OneToMany(() => Comment, (comment) => comment.article)
+    comments: Comment[];
 }
