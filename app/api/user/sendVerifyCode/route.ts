@@ -4,6 +4,7 @@ import { encode } from 'js-base64';
 import { NextResponse, NextRequest } from 'next/server'
 import request from '@/app/util/fetch';
 import getSession from '@/app/util/getIronSession';
+import { AxiosResponse } from 'axios';
 
 export async function POST(req: NextRequest) {
     const { to, templateId } = await req.json();
@@ -29,7 +30,7 @@ export async function POST(req: NextRequest) {
             authorization,
         }
     });
-    const { statusCode, statusMsg } = response as any;
+    const { statusCode, statusMsg } = response as AxiosResponse;
 
 
     if (statusCode === '000000') {

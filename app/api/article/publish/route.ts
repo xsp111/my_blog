@@ -1,11 +1,11 @@
 import getSession from "@/app/util/getIronSession";
 import { getDB } from "@/db";
 import { NextRequest, NextResponse } from "next/server";
-import { User, Article } from "@/db/entity";
+import { User, Article, Tag } from "@/db/entity";
 
 
 export async function POST(req: NextRequest) {
-    const { title, content } = await req.json();
+    const { title, content, selectedTags } = await req.json();
     const myDataSource = await getDB();
     const session = await getSession();
 
@@ -15,6 +15,14 @@ export async function POST(req: NextRequest) {
     .createQueryBuilder('users')
     .where('users.id = :id', { id: session.id })
     .getOne();
+
+    // 获取文章标签信息
+    const tags = await myDataSource
+    .getRepository(Tag)
+    .createQueryBuilder('tags')
+    .where('tags.id IN (:...ids)', { ids: selectedTags })
+    .getMany();
+
     if(user){
         // 保存文章内容
         const newArticle = new Article();
@@ -25,6 +33,7 @@ export async function POST(req: NextRequest) {
         newArticle.views = 0;
         newArticle.is_deleted = 0;
         newArticle.user = user;
+        newArticle.tags = tags;
         await myDataSource.manager.save(newArticle);
 
         return NextResponse.json({ 

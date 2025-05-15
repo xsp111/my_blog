@@ -25,7 +25,7 @@ export default function CommentInput({ user, articleId }: CommentInputProps) {
         request.post('/api/comment/publish', {
             articleId,
             content: commentInput
-        }).then((res: any) => {
+        }).then((res) => {
             if (res.code === 0) {
                 messageApi.open({
                     type: 'success',

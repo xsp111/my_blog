@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, OneToMany } from "typeorm";
+import type Tag from "./tag";
+import type Article from "./article";
 
 @Entity('users')
 export default class User {
@@ -16,4 +18,12 @@ export default class User {
 
     @Column()
     avatar: string;
+
+    @OneToMany("Article", (article: Article) => article.user)
+    articles: Article[];
+
+    @ManyToMany("Tag", (tag: Tag) => tag.id,{
+        cascade: true
+    })
+    tags: Tag[];
 }

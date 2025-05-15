@@ -3,15 +3,19 @@ import { Article, Comment } from "@/db/entity";
 import styles from "./index.module.scss";
 import { Avatar, Divider } from "antd";
 import { format } from "date-fns";
-import { cookies } from "next/headers";
 import Link from "next/link";
 import MarkDown from 'markdown-to-jsx';
-import  CommentInput from "@/app/components/comment/commentInput";
+import  CommentInput from "@/app/_components/comment/commentInput";
+import getSession from "@/app/util/getIronSession";
 
 export default async function ArticlePage({ params }: { params: Promise<{ id : string }> }) {
     // 获取当前用户信息
-    const cookie = await cookies();
-    const user = JSON.parse(cookie.get("user")?.value || "{}");
+    const session = await getSession();
+    const user = {
+        id: session.id,
+        nickname: session.nickname,
+        avatar: session.avatar,
+    }
 
     const { id } = await params;
     const myDataSource = await getDB();
@@ -29,7 +33,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id : s
     .leftJoinAndSelect("comments.user", "users")
     .where("comments.article_id = :id", { id })
     .getMany();
-    console.log(comments);
 
     // 增加阅读量
     if (article) {
@@ -44,9 +47,13 @@ export default async function ArticlePage({ params }: { params: Promise<{ id : s
             <div className={styles.user}>
                 <Avatar src={article.user.avatar} size={50}/>
                 <div className={styles.info}>
-                    <div className={styles.name}>{article.user.nickname}</div>
+                    <div className={styles.name}>
+                        <Link href={`/user/${article.user.id}`}>
+                            {article.user.nickname}
+                        </Link>
+                    </div>
                     <div className={styles.date}>
-                        <div>{format(new Date(article.update_time), "yyyy MM dd HH:mm:ss")}</div>
+                        <div>{format(new Date(article.create_time), "yyyy MM dd HH:mm:ss")}</div>
                         <div>阅读 {article.views}</div>
                         {
                             Number(user.id) === article.user.id && (
@@ -59,13 +66,17 @@ export default async function ArticlePage({ params }: { params: Promise<{ id : s
             <MarkDown className={styles.markdown}>{article.content}</MarkDown>
             <Divider />
             <div className={styles.comment}>
-                <h3>评论</h3>
+                <h2>评论</h2>
                 {
-                    user.id && (
+                    user.id ? (
                         <CommentInput 
                             user={user} 
                             articleId={article.id}
                         />
+                    ):(
+                        <div className={styles.empty}>
+                            登录即可评论
+                        </div>
                     )
                 }
                 <div className={styles.commentList}>

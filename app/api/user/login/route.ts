@@ -1,8 +1,15 @@
 import getSession from "@/app/util/getIronSession";
 import { NextRequest, NextResponse } from "next/server";
-import  { getDB} from "@/db/index";
+import  { getDB } from "@/db/index";
 import { User, UserAuth } from "@/db/entity";
 
+
+type IUser  = {
+    id: number,
+    nickname: string,
+    avatar: string,
+    verifyCode?: number,
+}
 
 export async function POST(req: NextRequest){
     const { verify, phone, identity_type } = await req.json();
@@ -10,11 +17,10 @@ export async function POST(req: NextRequest){
     const session = await getSession();
 
     // 将用户信息保存在ironsession
-    async function saveUser( user: { id: number, nickname: string, avatar: string}) {
+    async function saveUser( user: { id: number, nickname: string, avatar: string } ) {
         session.id = user.id;
         session.nickname =user.nickname;
         session.avatar = user.avatar;
-    
         await session.save();
     }
 
@@ -28,7 +34,7 @@ export async function POST(req: NextRequest){
         .where('user_auths.identifier = :identifier and user_auths.identity = :identity', { identifier: phone, identity: identity_type })
         .getOne();
 
-        let user: { id: number, nickname: string, avatar: string};
+        let user: IUser;
         if( userAuth ){
             user = userAuth.user;
         } else {
@@ -56,12 +62,6 @@ export async function POST(req: NextRequest){
                 nickname: session.nickname,
                 avatar: session.avatar,
             },
-        });
-
-        // 设置 Cookie
-        res.cookies.set("user", JSON.stringify(user), {
-            path: "/",
-            maxAge: 60 * 60 * 24 * 1, // 1天
         });
 
         return res;

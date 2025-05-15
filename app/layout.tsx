@@ -4,6 +4,7 @@ import "./globals.css";
 import "antd/dist/reset.css"
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import '@ant-design/v5-patch-for-react-19';
+import ReduxProvider from "./_components/layout/ReduxProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <AntdRegistry>
-          {children}
+          <ReduxProvider>
+            {children}
+          </ReduxProvider>
         </AntdRegistry>
       </body>
     </html>

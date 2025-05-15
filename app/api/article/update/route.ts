@@ -1,6 +1,6 @@
 import { getDB } from "@/db";
 import { NextRequest, NextResponse } from "next/server";
-import { Article } from "@/db/entity";
+import { Article, Tag } from "@/db/entity";
 
 export async function GET(req: NextRequest) {
     // 获取文章id
@@ -11,6 +11,7 @@ export async function GET(req: NextRequest) {
         .getRepository(Article)
         .createQueryBuilder("articles")
         .leftJoinAndSelect("articles.user", "users")
+        .leftJoinAndSelect("articles.tags", "tags")
         .where("articles.id = :id", { id })
         .getOne();
 
@@ -21,6 +22,7 @@ export async function GET(req: NextRequest) {
             data: {
                 title: article?.title,
                 content: article?.content,
+                tags: article?.tags,
             }
         }));
     }else{
@@ -33,7 +35,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-    const { title, content, id } = await req.json();
+    const { title, content, id, selectedTags } = await req.json();
     const myDataSource = await getDB();
     const article = await myDataSource
         .getRepository(Article)
@@ -42,11 +44,19 @@ export async function POST(req: NextRequest) {
         .where("articles.id = :id", { id })
         .getOne();
 
+    // 获取文章标签信息
+    const tags = await myDataSource
+    .getRepository(Tag)
+    .createQueryBuilder('tags')
+    .where('tags.id IN (:...ids)', { ids: selectedTags })
+    .getMany();
+
     if(article){
         // 保存文章内容
         article.title = title;
         article.content = content;
         article.update_time = new Date();
+        article.tags = tags;
         await myDataSource.manager.save(article);
 
         return NextResponse.json({ 

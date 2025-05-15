@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from 'next/navigation';
-import { HomeOutlined, QuestionCircleOutlined, TagOutlined } from '@ant-design/icons';
+import { HomeOutlined, TagOutlined } from '@ant-design/icons';
 import styles from './index.module.scss';
 import Link from 'next/link';
 
@@ -15,13 +15,6 @@ export default function NavLinks() {
             label: '首页',
             value: '/',
             icon: <HomeOutlined
-                style={iconStyle}
-            />,
-        },
-        {
-            label: '咨询',
-            value: '/info',
-            icon: <QuestionCircleOutlined
                 style={iconStyle}
             />,
         },

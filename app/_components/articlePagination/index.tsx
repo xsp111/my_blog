@@ -1,6 +1,6 @@
 "use client";
 
-import Listitem from "@/app/components/Listitem";
+import Listitem from "@/app/_components/Listitem";
 import { Divider, Pagination } from "antd";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setPage } from "@/store/modules/paginationStore";

@@ -4,7 +4,7 @@ import { EyeOutlined } from "@ant-design/icons";
 import { formatDistanceToNow } from "date-fns";
 import { Avatar } from "antd";
 import { markdownToTxt } from "markdown-to-txt";
-import type { article } from "@/app/components/articlePagination";
+import type { article } from "@/app/_components/articlePagination";
 
 export default function Listitem({ article }: { article: article }) {
     return (

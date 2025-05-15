@@ -1,6 +1,6 @@
 import { getDB } from "@/db";
 import { Article } from "@/db/entity";
-import ArticlePagination from "@/app/components/articlePagination";
+import ArticlePagination from "@/app/_components/articlePagination";
 
 
 export default async function Page() {

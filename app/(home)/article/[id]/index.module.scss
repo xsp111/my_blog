@@ -14,6 +14,7 @@
         margin-left: 10px;
 
         .name {
+            margin-bottom: 5px;
             font-size: 18px;
             font-weight: bold;
         }
@@ -23,7 +24,7 @@
             font-size: 14px;
             color: #8a919a;
 
-            div{
+            div {
                 margin-right: 10px;
             }
         }
@@ -33,6 +34,14 @@
 .markdown {
     img {
         width: 100%;
+    }
+}
+
+.comment {
+    .empty {
+        margin-top: 20px;
+        font-size: 16px;
+        color: #8a919f;
     }
 }
 

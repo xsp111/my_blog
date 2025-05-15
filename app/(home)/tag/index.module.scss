@@ -1,0 +1,29 @@
+.tags {
+    display: flex;
+    justify-content: flex-start;
+
+    .tagWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+
+        width: 220px;
+        height: 200px;
+        border: 1px solid #f3f3f3;
+        padding: 20px;
+        margin-right: 20px;
+
+        // icon大小
+        svg {
+            width: 50px;
+            height: 50px;
+        }
+
+        .title {
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+    }
+}

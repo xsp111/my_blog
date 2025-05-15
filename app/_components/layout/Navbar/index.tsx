@@ -3,14 +3,14 @@ import styles from './index.module.scss';
 import NavLinks from './nav-links';
 import { Button, Dropdown, Avatar } from 'antd';
 import { useState, useEffect } from 'react';
-import Login from '@/app/components/Login';
+import Login from '@/app/_components/Login';
 import {  useAppDispatch, useAppSelector } from '@/store/hooks';
-import { initializeUser } from '@/store/modules/userStore';
+import { setUser } from '@/store/modules/userStore';
 import type { MenuProps } from 'antd/es/menu';
 import { HomeOutlined, LogoutOutlined } from '@ant-design/icons';
 import request from '@/app/util/fetch';
 import { useRouter } from 'next/navigation';
-
+import Image from 'next/image';
 
 
 export default function Navbar () {
@@ -40,7 +40,20 @@ export default function Navbar () {
     // 初始化用户状态
     const dispatch = useAppDispatch();
     useEffect(() => {
-        dispatch(initializeUser());
+        const user = {
+            id: null,
+            nickname: '',
+            avatar: ''
+        }
+        request.get('/api/user/getUserInfo')
+        .then((res) => {
+            if( res.code == 0 ){
+                user.id = res.data.id;
+                user.nickname = res.data.nickname;
+                user.avatar = res.data.avatar;
+            }
+            dispatch(setUser(user));
+        });
     }, [dispatch]);
 
     // 加载用户信息
@@ -66,10 +79,14 @@ export default function Navbar () {
 
     // 退出登录
     function handleOnLogout () {
-        request.post('/api/user/logout').then((res: any) => {
+        request.post('/api/user/logout').then((res) => {
             if(res.code === 0) {
-                console.log('退出登录成功');
-                dispatch(initializeUser());
+                dispatch(setUser({
+                    id: null,
+                    nickname: '',
+                    avatar: ''
+                }));
+                router.refresh();
             }
         })
     }
@@ -84,7 +101,16 @@ export default function Navbar () {
 
     return (
             <div className={styles.navbar}>
-                <section className={styles.logoArea}>MY-BLOG</section>
+                <section className={styles.logoArea}>
+                    <Image 
+                        src='/my_blog_logo.svg' 
+                        alt='logo' 
+                        width={50} 
+                        height={50}
+                        style={{ marginRight: '10px'}}
+                    />
+                    MY-BLOG
+                </section>
                 <section className={styles.linkArea}>
                     <NavLinks />
                 </section>

@@ -7,8 +7,9 @@ import { Statistic } from 'antd';
 import validPhone from '@/app/util/validPhone';
 import request from '@/app/util/fetch';
 import { message } from 'antd';
-import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { setUser } from '@/store/modules/userStore';
+import { useAppDispatch } from '@/store/hooks';
+import { useRouter } from 'next/navigation';
 
 
 interface LoginProps {
@@ -18,11 +19,8 @@ interface LoginProps {
 
 
 export default function Login ( { visible, onClose }: LoginProps ) {
-    // 管理用户状态
-    const user = useAppSelector( ( state ) => state.user );
+    const router = useRouter();
     const dispatch = useAppDispatch();
-    console.log(user);
-
     //倒计时组件
     const { Countdown } = Statistic;
     const deadline = 60 ; // 倒计时60秒
@@ -69,7 +67,7 @@ export default function Login ( { visible, onClose }: LoginProps ) {
             request.post('/api/user/sendVerifyCode',{
                 to: form.phone,
                 templateId: 1
-            }).then((res: any) => {
+            }).then((res) => {
                 if ( res.code === 0 ) {
                     deadlineTime.current = Date.now() + deadline * 1000;
                     // 显示倒计时
@@ -92,10 +90,11 @@ export default function Login ( { visible, onClose }: LoginProps ) {
         request.post('/api/user/login', {
             ...form,
             identity_type: 'phone',
-        }).then((res: any) => {
+        }).then((res) => {
             // 如果返回的code为0，登录成功
             if( res.code === 0 ){
                 // 保存用户信息
+                console.log(res.data);
                 dispatch(setUser(
                    res.data
                 ));
@@ -107,6 +106,7 @@ export default function Login ( { visible, onClose }: LoginProps ) {
                 });
                 // 0.5秒后关闭登陆界面
                 setTimeout(() => {
+                    router.refresh();
                     handleClose();
                 }, 500);
             } else {

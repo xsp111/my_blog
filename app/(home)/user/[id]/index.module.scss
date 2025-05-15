@@ -1,0 +1,87 @@
+.userDetail {
+
+    width: 65vw;
+    margin: 60px auto 0;
+    position: relative;
+
+    .left {
+        width: 50vw;
+        background-color: #fff;
+        padding: 20px;
+
+        .userInfo {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            position: relative;
+
+            .avatar {
+                margin-right: 50px;
+            }
+
+            .nickname {
+                font-size: 20px;
+                font-weight: bolder;
+                margin-bottom: 10px;
+            }
+
+            .desc {
+                display: flex;
+                align-items: center;
+                margin-bottom: 5px;
+                color: #72777b;
+
+                svg {
+                    width: 12px;
+                    height: 12px;
+                    margin-right: 10px;;
+                }
+            }
+
+            button {
+                position: absolute;
+                right: 0;
+            }
+        }
+    }
+
+    .right {
+        position: fixed;
+        top: 60px;
+        right: 17.5vw;
+        width: 240px;
+        height: 180px;
+        background-color: #fff;
+
+        .achievement {
+            height: 100px;
+
+            .header {
+                display: flex;
+                align-items: center;
+                height: 50px;
+                border-bottom: 1px solid #f3f3f3;
+                padding: 20px;
+                font-size: 16px;
+                font-weight: bolder;
+            }
+
+            .number {
+                padding: 20px;
+
+                .wrapper {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 10px;
+
+                    svg {
+                        width: 20px;
+                        height: 20px;
+                        fill: #89b7f9;
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
