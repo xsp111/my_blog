@@ -1,10 +1,9 @@
 import getSession from "@/app/util/getIronSession";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 
-export async function GET(req: NextRequest) {
+export async function GET() {
     const session = await getSession();
-    console.log(req);
     return NextResponse.json({
         code: 0,
         msg: "登录成功",

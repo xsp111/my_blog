@@ -16,6 +16,8 @@ export default function Page() {
     const [followTags, setFollowTags] = useState<Tag[]>([]);
     const [allTags, setAllTags] = useState<Tag[]>([]);
 
+    console.log(user.id);
+
     // 关注标签
     function handleOnfollow(tagId: number, userId: number) {
       request.post('/api/tag/follow', {
@@ -68,7 +70,7 @@ export default function Page() {
               setFollowTags(res.data.followTags);
             }
         })
-    }, []);
+    }, [user]);
 
   const items: TabsProps['items'] = [
     {
@@ -85,19 +87,11 @@ export default function Page() {
                                 <div className={styles.title}>{tag.title}</div>
                                 <div>{tag.follow_count} 关注 {tag.article_count} 文章</div>
                                 {
-                                  // 当前用户是否关注
-                                    tag.users.find(user => user.id === user.id) ? (
-                                      <Button
-                                        onClick={() => handleOnUnfollow(tag.id, user.id as number)}
-                                        type="primary" 
-                                        danger
-                                      >取消关注</Button>
-                                    ) : (
-                                      <Button 
-                                        type="primary"
-                                        onClick={() => handleOnfollow(tag.id, user.id as number)}
-                                      >关注</Button>
-                                    )
+                                  <Button
+                                    onClick={() => handleOnUnfollow(tag.id, user.id as number)}
+                                    type="primary" 
+                                    danger
+                                  >取消关注</Button>
                                 }
                             </div>
                         </div>
@@ -126,7 +120,7 @@ export default function Page() {
                                 {
                                   user.id && (
                                     // 当前用户是否关注
-                                    tag.users.find(user => user.id === user.id) ? (
+                                    tag.users.find(followUser => followUser.id === user.id) ? (
                                       <Button
                                         onClick={() => handleOnUnfollow(tag.id, user.id as number)}
                                         type="primary" 

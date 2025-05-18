@@ -7,6 +7,7 @@ import Link from "next/link";
 import MarkDown from 'markdown-to-jsx';
 import  CommentInput from "@/app/_components/comment/commentInput";
 import getSession from "@/app/util/getIronSession";
+import DeleteButton from "@/app/_components/deleteButton";
 
 export default async function ArticlePage({ params }: { params: Promise<{ id : string }> }) {
     // 获取当前用户信息
@@ -57,7 +58,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ id : s
                         <div>阅读 {article.views}</div>
                         {
                             Number(user.id) === article.user.id && (
-                                <Link href={`/editor/modify?id=${article.id}`} style={{ color: "#1e80ff" }}>编辑</Link>
+                                <>
+                                    <Link href={`/editor/modify?id=${article.id}`} style={{ marginRight: "5px", color: "#1e80ff" }}>编辑</Link>
+                                    <DeleteButton id={id} />
+                                </>
                             )
                         }
                     </div>

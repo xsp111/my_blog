@@ -1,10 +1,11 @@
 import { CodeOutlined, FireOutlined, FundViewOutlined } from '@ant-design/icons';
 import styles from './index.module.scss'
 import Link from 'next/link';
-import { Avatar, Button, Divider } from 'antd';
+import { Avatar, Divider } from 'antd';
 import { getDB } from '@/db';
 import { Article, User } from '@/db/entity';
 import Listitem from '@/app/_components/Listitem';
+import EditInfoButton from '@/app/_components/editUserInfoButton';
 
 export default async function UserPage({
     params,
@@ -50,7 +51,7 @@ export default async function UserPage({
                     </div>
                   </div>
                   <Link href={`/user/${id}/edit`}>
-                    <Button>编辑个人资料</Button>
+                    <EditInfoButton id={id} />
                   </Link>
                 </div>
                 <Divider />

@@ -33,7 +33,7 @@
             }
         }
 
-        .verifyCodeArea {
+        .pwdArea {
             position: relative;
             cursor: pointer;
 
@@ -65,7 +65,7 @@
             }
         }
 
-        .otherLogin {
+        .turnToSignUp {
             margin-top: 15px;
             font-size: 14px;
             text-align: center;
@@ -85,4 +85,12 @@
             }
         }
     }
+}
+
+.verifyPwdError {
+    height: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+    color: rgb(255, 125, 125);
+    font-size: 12px;
 }

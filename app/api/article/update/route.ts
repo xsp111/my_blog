@@ -46,10 +46,10 @@ export async function POST(req: NextRequest) {
 
     // 获取文章标签信息
     const tags = await myDataSource
-    .getRepository(Tag)
-    .createQueryBuilder('tags')
-    .where('tags.id IN (:...ids)', { ids: selectedTags })
-    .getMany();
+        .getRepository(Tag)
+        .createQueryBuilder('tags')
+        .where('tags.id IN (:...ids)', { ids: selectedTags })
+        .getMany();
 
     if(article){
         // 保存文章内容

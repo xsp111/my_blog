@@ -1,10 +1,10 @@
+import getSession from "@/app/util/getIronSession";
 import { getDB } from "@/db";
 import { Tag } from "@/db/entity";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
-    const userCookie = req.cookies.get('user')?.value
-    const id = userCookie ? JSON.parse(userCookie).id : null;
+export async function GET() {
+    const session = await getSession();
 
     const myDataSource = await getDB();
     const tags = await myDataSource
@@ -13,8 +13,11 @@ export async function GET(req: NextRequest) {
         .leftJoinAndSelect('tags.users', 'users')
         .getMany();
 
-    if(id){
-        const followTags = tags.filter(tag => tag.users.some(user => user.id === Number(id)));
+    if(session.id){
+        console.log(tags);
+        const followTags = tags.filter(tag => tag.users.some(user => user.id === session.id));
+        console.log(session.id);
+        console.log(followTags);
         return NextResponse.json({ 
             code: 0,
             msg: '获取成功',

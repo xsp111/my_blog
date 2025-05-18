@@ -12,8 +12,5 @@ export async function POST() {
         data: {},
     });
 
-    // 删除 Cookie
-    res.cookies.delete('user');
-
     return res;
 }

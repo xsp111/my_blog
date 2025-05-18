@@ -86,7 +86,7 @@ export default function Navbar () {
                     nickname: '',
                     avatar: ''
                 }));
-                router.refresh();
+                router.push('/');
             }
         })
     }

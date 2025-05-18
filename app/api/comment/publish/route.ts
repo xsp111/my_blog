@@ -13,18 +13,24 @@ export async function POST(req: NextRequest) {
     const article =  await myDataSource
     .getRepository(Article)
     .createQueryBuilder('articles')
-    .leftJoinAndSelect('articles.user', 'users')
-    .where('articles.id = :articleId and users.id = :userId', { articleId, userId: session.id })
+    .where('articles.id = :articleId', { articleId })
     .getOne();
 
-    if(article){
+    // 获取评论用户信息
+    const user = await myDataSource
+    .getRepository(User)
+    .createQueryBuilder('users')
+    .where('users.id = :id', { id: session.id })
+    .getOne();
+
+    if(article && user){
         // 新建评论
         const newComment = new Comment();
         newComment.content = content;
         newComment.create_time = new Date();
         newComment.update_time = new Date();
         newComment.article = article;
-        newComment.user = article.user;
+        newComment.user = user;
         await myDataSource.manager.save(newComment);
 
         return NextResponse.json({ 
