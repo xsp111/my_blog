@@ -53,6 +53,21 @@ export default async function UserPage({
                   <Link href={`/user/${id}/edit`}>
                     <EditInfoButton id={id} />
                   </Link>
+                  <div className={styles.right}>
+                    <div className={styles.achievement}>
+                      <div className={styles.header}>个人成就</div>
+                      <div className={styles.number}>
+                        <div className={styles.wrapper}>
+                          <FundViewOutlined />
+                          <span>共创作 { articles.length } 篇文章</span>
+                        </div>
+                        <div className={styles.wrapper}>
+                          <FundViewOutlined />
+                          <span>文章被阅读 { viewsCount } 次</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <Divider />
                 <div className={styles.article}>
@@ -67,21 +82,6 @@ export default async function UserPage({
                     })
                   }
                 </div>
-              </div>
-              <div className={styles.right}>
-                  <div className={styles.achievement}>
-                    <div className={styles.header}>个人成就</div>
-                    <div className={styles.number}>
-                      <div className={styles.wrapper}>
-                        <FundViewOutlined />
-                        <span>共创作 { articles.length } 篇文章</span>
-                      </div>
-                      <div className={styles.wrapper}>
-                        <FundViewOutlined />
-                        <span>文章被阅读 { viewsCount } 次</span>
-                      </div>
-                    </div>
-                  </div>
               </div>
             </div>
         </>

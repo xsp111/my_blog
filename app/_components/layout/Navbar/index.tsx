@@ -9,12 +9,15 @@ import { setUser } from '@/store/modules/userStore';
 import type { MenuProps } from 'antd/es/menu';
 import { HomeOutlined, LogoutOutlined } from '@ant-design/icons';
 import request from '@/app/util/fetch';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 
 export default function Navbar () {
     const router = useRouter();
+    const pathname = usePathname();
+
+    console.log(pathname);
     const items: MenuProps['items'] = [
         {
           key: '1',
@@ -115,8 +118,12 @@ export default function Navbar () {
                     <NavLinks />
                 </section>
                 <section className={styles.operaArea}>
-                    <Button onClick={handleOnGotoEditorPage}>写文章</Button>
-
+                    { pathname !== '/editor/new' ?
+                        <Button onClick={handleOnGotoEditorPage}>写文章</Button> :
+                        <Button
+                            disabled
+                         >正在编辑...</Button>
+                    }
                     {
                         user?.id ? 
                         <Dropdown 

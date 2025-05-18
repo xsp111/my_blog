@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { Button, Input, Select } from "antd";
+import { EditOutlined } from "@ant-design/icons";
 import { message } from "antd";
 import request from "@/app/util/fetch";
 import { useRouter } from "next/navigation";
@@ -83,37 +84,48 @@ export default function NewEditor() {
     }
 
     return (
-        <div className={styles.container}>
-            {contextHolder}
-            <div className={styles.operationArea}>
-                <Input 
-                    value={title} 
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="输入文章标题" 
+        <div className="content-layout">
+            <div className={styles.container}>
+                {contextHolder}
+                <div className={styles.operationArea}>
+                    <div className={styles.show}>
+                        <h2>
+                            
+                            {title ? title : <span className={styles.titleTip}>你的文章标题 <EditOutlined /></span>}
+                        </h2>
+                    </div>
+                    <div className={styles.editor}>
+                        <Input 
+                            value={title} 
+                            style={{ width: '50%' }}
+                            onChange={(e) => setTitle(e.target.value)}
+                            placeholder="输入文章标题" 
+                        />
+                        <Select
+                            mode="multiple"
+                            allowClear
+                            style={{ width: '40%' }}
+                            placeholder="请选择标签"
+                            onChange={handleChange}
+                            options={allTags.map((tag) => {
+                                return {
+                                    label: tag.title,
+                                    value: tag.id,
+                                }
+                            })}
+                        />
+                        <Button 
+                            type="primary"
+                            onClick={handleOnPublish}
+                        >发布文章</Button>
+                    </div>
+                </div>
+                <MDEditor 
+                    value={content}
+                    height={700}
+                    onChange={handleOnChange} 
                 />
-                <Select
-                    mode="multiple"
-                    allowClear
-                    style={{ width: '15%' }}
-                    placeholder="请选择标签"
-                    onChange={handleChange}
-                    options={allTags.map((tag) => {
-                        return {
-                            label: tag.title,
-                            value: tag.id,
-                        }
-                    })}
-                />
-                <Button 
-                    type="primary"
-                    onClick={handleOnPublish}
-                >发布文章</Button>
             </div>
-            <MDEditor 
-                value={content}
-                height={1080}
-                onChange={handleOnChange} 
-            />
         </div>
     );
 }

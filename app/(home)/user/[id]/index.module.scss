@@ -1,22 +1,18 @@
 .userDetail {
-
-    width: 65vw;
+    width: 700px;
     margin: 60px auto 0;
-    position: relative;
 
     .left {
-        width: 50vw;
         background-color: #fff;
         padding: 20px;
 
         .userInfo {
             display: flex;
-            justify-content: flex-start;
+            justify-content: space-between;
             align-items: center;
-            position: relative;
 
             .avatar {
-                margin-right: 50px;
+                margin-right: 20px;
             }
 
             .nickname {
@@ -38,50 +34,36 @@
                 }
             }
 
-            button {
-                position: absolute;
-                right: 0;
-            }
-        }
-    }
+            .right {
+                .achievement {
+                    .header {
+                        border-bottom: 1px solid #f3f3f3;
+                        font-size: 20px;
+                        font-weight: bolder;
+                        margin-bottom: 10px;
+                    }
 
-    .right {
-        position: fixed;
-        top: 60px;
-        right: 17.5vw;
-        width: 240px;
-        height: 180px;
-        background-color: #fff;
+                    .number {
+                        .wrapper {
+                            display: flex;
+                            align-items: center;
+                            margin-bottom: 10px;
 
-        .achievement {
-            height: 100px;
-
-            .header {
-                display: flex;
-                align-items: center;
-                height: 50px;
-                border-bottom: 1px solid #f3f3f3;
-                padding: 20px;
-                font-size: 16px;
-                font-weight: bolder;
-            }
-
-            .number {
-                padding: 20px;
-
-                .wrapper {
-                    display: flex;
-                    align-items: center;
-                    margin-bottom: 10px;
-
-                    svg {
-                        width: 20px;
-                        height: 20px;
-                        fill: #89b7f9;
-                        margin-right: 10px;
+                            svg {
+                                width: 12px;
+                                height: 12px;
+                                fill: #89b7f9;
+                                margin-right: 10px;
+                            }
+                        }
                     }
                 }
             }
+        }
+        .article {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
     }
 }

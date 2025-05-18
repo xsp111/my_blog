@@ -1,0 +1,11 @@
+.wrapper {
+    margin: 0 auto;
+    .show {
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: auto auto;
+
+        justify-items: center;
+        align-items: center;
+    }
+}

@@ -1,0 +1,27 @@
+.container {
+    background-color: #fff;
+
+
+
+    .operationArea {
+        margin-bottom: 15px;
+
+        .show {
+            h2 {
+                height: 30px;
+                font-size: 25px;
+                .titleTip {
+                    color: #999;
+                    font-size: 20px;
+                    font-weight: 300;
+                    line-height: 30px;
+                }
+            }
+        }
+
+        .editor {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}
